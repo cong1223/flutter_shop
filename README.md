@@ -1,4 +1,5 @@
 # flutter_shop
+<<<<<<< HEAD
 
 A new Flutter project.
 
@@ -20,3 +21,6 @@ samples, guidance on mobile development, and a full API reference.
 
 
 test
+=======
+flutter搭建的商店APP
+>>>>>>> 62eebf8a1dbe5b310604117c1384f0cdf8c35ad1
