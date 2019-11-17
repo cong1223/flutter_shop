@@ -41,6 +41,9 @@ dependencies:
   # 下拉刷新组件
   flutter_easyrefresh: ^2.0.4
 
+  #状态管理
+  provide: ^1.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
               children: <Widget>[
                 SwiperDiy(),
                 TopNavigator(),
-                AdBanner(adPicture: 'http://pic34.nipic.com/20131030/2455348_194508648000_2.jpg'),
+                AdBanner(adPicture: 'https://img2.woyaogexing.com/2019/10/23/8df0f8062bd141d980f119e6380edd0f!400x400.jpeg'),
                 LeaderPhone(leaderImage: 'http://img4.cache.netease.com/photo/0001/2011-03-01/6U3BQPRO00AQ0001.jpg',leaderPhone:'13757154855'),
                 Recommend(recommendList: [{},{},{}],),
                 FloorGoods(),
