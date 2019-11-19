@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_shop/model/CategoryBean.dart';
 import 'package:flutter_shop/model/category_entity.dart';
+import 'package:flutter_shop/model/category_goods_list_entity.dart';
 import 'package:flutter_shop/pages/components/category/CategoryLeftNav.dart';
 import 'package:flutter_shop/provide/child_category.dart';
 import 'package:flutter_shop/service/service_method.dart';
 import 'package:provide/provide.dart';
 import '../data/category_data.dart';
 import 'components/category/CategoryRightNav.dart';
+import '../data/category_goods_list.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -16,6 +18,11 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+  @override
+  void initState() {
+    this._getCategoryGoodsList();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     _getCategory();
@@ -51,5 +58,20 @@ class _CategoryPageState extends State<CategoryPage> {
     setState(() {
 //      list = categoryList.data.cast<CategoryBean>();
     });
+  }
+
+
+//  获取分类商品列表
+  _getCategoryGoodsList() async {
+//    var data = {
+//      'categoryId': 4,
+//      'CategorySubId': '',
+//      'page': 1
+//    };
+//    request('xxxxxx',params: data).then((val) {
+//      var data = json.decode(val.toString);
+//      CategoryGoodsListEntity goodsList = CategoryGoodsListEntity.fromJson(val);
+//    });
+    CategoryGoodsListEntity goodsList = CategoryGoodsListEntity.fromJson(categoryGoodsList);
   }
 }
