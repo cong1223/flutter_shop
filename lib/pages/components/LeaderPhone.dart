@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 class LeaderPhone extends StatelessWidget {
   final String leaderImage;
@@ -24,7 +24,7 @@ class LeaderPhone extends StatelessWidget {
               left: 0,
               right: 0,
               child: InkWell(
-                onTap: _launchURL,
+                onTap: (){},
                 child: Image.network(
                   this.leaderImage,
                   fit: BoxFit.cover,
@@ -41,12 +41,12 @@ class LeaderPhone extends StatelessWidget {
         ));
   }
 
-  void _launchURL() async {
-    String url = 'tel:' + this.leaderPhone;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw Exception('url不能访问');
-    }
-  }
+  // void _launchURL() async {
+  //   String url = 'tel:' + this.leaderPhone;
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw Exception('url不能访问');
+  //   }
+  // }
 }

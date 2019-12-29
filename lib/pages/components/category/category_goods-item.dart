@@ -14,7 +14,10 @@ class CategoryGoodsItem extends StatefulWidget {
 class _CategoryGoodsItemState extends State<CategoryGoodsItem> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      width: ScreenUtil().setWidth(570),
+      child: _goodsList(widget.goodsList)
+    );
   }
 
 //  商品单项内容左侧商品图片
@@ -61,5 +64,49 @@ class _CategoryGoodsItemState extends State<CategoryGoodsItem> {
         ],
       ),
     );
+  }
+
+
+//  商品单项
+  _goodsItem(int index) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.only(top: 5,bottom: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(width: 1,color: Colors.black12)
+          )
+        ),
+        child: Row(
+          children: <Widget>[
+            _leftImaage(index),
+            Column(
+              children: <Widget>[
+                _goodsTitle(index),
+                _goodsPrice(index)
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+//  商品列表
+  _goodsList(List<CategoryGoodsListData> list) {
+    return ListView(
+      children: _getGoodsList(list)
+    );
+  }
+
+  // 获取商品列表
+  List<Widget> _getGoodsList(List<CategoryGoodsListData> list) {
+    List<Widget> goodsList = [];
+    for (int i = 0; i <list.length; i ++) {
+      goodsList.add(_goodsItem(i));
+    }
+    return goodsList;
   }
 }

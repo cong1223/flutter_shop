@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_shop/router/application.dart';
 
 class TopNavigator extends StatelessWidget {
   // final List navigatorList;
@@ -15,7 +16,9 @@ class TopNavigator extends StatelessWidget {
 
   Widget _gridViewItemUI(BuildContext context) {
     return InkWell(
-      onTap: (){print('点击了导航');},
+      onTap: (){
+        Application.router.navigateTo(context, '/details?id=123');
+      },
       child: Column(
         children: <Widget>[
           Image.network("http://img3.duitang.com/uploads/item/201507/23/20150723115018_ma428.thumb.700_0.jpeg",width: ScreenUtil().setWidth(95),),

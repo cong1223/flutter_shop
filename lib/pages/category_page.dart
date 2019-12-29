@@ -5,12 +5,14 @@ import 'package:flutter_shop/model/CategoryBean.dart';
 import 'package:flutter_shop/model/category_entity.dart';
 import 'package:flutter_shop/model/category_goods_list_entity.dart';
 import 'package:flutter_shop/pages/components/category/CategoryLeftNav.dart';
+import 'package:flutter_shop/provide/category_goods_list_provide.dart';
 import 'package:flutter_shop/provide/child_category.dart';
 import 'package:flutter_shop/service/service_method.dart';
 import 'package:provide/provide.dart';
 import '../data/category_data.dart';
 import 'components/category/CategoryRightNav.dart';
 import '../data/category_goods_list.dart';
+import 'components/category/category_goods-item.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -18,6 +20,9 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+
+  CategoryGoodsListEntity categoryGoods = CategoryGoodsListEntity.fromJson(categoryGoodsList);
+
   @override
   void initState() {
     this._getCategoryGoodsList();
@@ -35,7 +40,10 @@ class _CategoryPageState extends State<CategoryPage> {
               CategoryLeftNav(),
               Column(
                 children: <Widget>[
-                  CategoryRightNav()
+                  CategoryRightNav(),
+                  Expanded(
+                    child: CategoryGoodsItem(categoryGoods.data)
+                  ),
                 ],
               )
             ],
@@ -62,9 +70,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
 
 //  获取分类商品列表
-  _getCategoryGoodsList() async {
+  _getCategoryGoodsList({String categoryId}) async {
 //    var data = {
-//      'categoryId': 4,
+//      'categoryId': categoryId == null ? 4 : categoryId,
 //      'CategorySubId': '',
 //      'page': 1
 //    };
@@ -72,6 +80,11 @@ class _CategoryPageState extends State<CategoryPage> {
 //      var data = json.decode(val.toString);
 //      CategoryGoodsListEntity goodsList = CategoryGoodsListEntity.fromJson(val);
 //    });
+
+
     CategoryGoodsListEntity goodsList = CategoryGoodsListEntity.fromJson(categoryGoodsList);
+
+    Provide.value<CategoryGoodsListProvide>(context).getCategoryGoodsList(goodsList.data);
+
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_shop/data/category_goods_list.dart';
 import 'package:flutter_shop/model/CategoryBean.dart';
 import 'package:flutter_shop/model/category_entity.dart';
+import 'package:flutter_shop/model/category_goods_list_entity.dart';
+import 'package:flutter_shop/provide/category_goods_list_provide.dart';
 import 'package:flutter_shop/provide/child_category.dart';
 import 'package:provide/provide.dart';
 import '../../../data/category_data.dart';
@@ -46,6 +49,7 @@ class _CategoryLeftNavState extends State<CategoryLeftNav> {
               onTap: (){
                 var childList = categoryEntity.data[index].bxMallSubDto;
                 Provide.value<ChildCategory>(context).getChildCategory(childList,index);
+                _getCategoryGoodsList(categoryId:categoryEntity.data[index].mallCategoryId);
               },
               child: Padding(
                 padding: EdgeInsets.fromLTRB(5, 15, 0, 10),
@@ -55,6 +59,14 @@ class _CategoryLeftNavState extends State<CategoryLeftNav> {
         );
       },
     );
+  }
+  //  获取分类商品列表
+  _getCategoryGoodsList({String categoryId}) async {
+
+    CategoryGoodsListEntity goodsList = CategoryGoodsListEntity.fromJson(categoryGoodsList);
+
+    Provide.value<CategoryGoodsListProvide>(context).getCategoryGoodsList(goodsList.data);
+
   }
 }
 

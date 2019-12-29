@@ -36,13 +36,16 @@ dependencies:
   flutter_screenutil: ^0.6.0
 
   # 打开链接(电话，网页，邮箱..)组件
-  url_launcher: ^5.2.3
+  # url_launcher: 5.2.3
 
   # 下拉刷新组件
   flutter_easyrefresh: ^2.0.4
 
   #状态管理
   provide: ^1.0.2
+
+  #路由管理
+  fluro: ^1.4.0
 
 dev_dependencies:
   flutter_test:
