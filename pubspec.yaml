@@ -47,6 +47,12 @@ dependencies:
   #路由管理
   fluro: ^1.4.0
 
+  #html解析
+  flutter_html: ^0.9.6
+
+  #持久化存储
+  shared_preferences: ^0.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
