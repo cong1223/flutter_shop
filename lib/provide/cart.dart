@@ -4,10 +4,13 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_shop/model/cart_info_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart' as prefix0;
 
 class CartProvider with ChangeNotifier {
   String cartString = "";
   List<CartInfoMode> cartList = [];
+  double allPrice = 0.0;
+  int allGoodsCount = 0;
 
   save(goodsId,goodsName,count,price,images) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -30,7 +33,8 @@ class CartProvider with ChangeNotifier {
         'goodsName':goodsName,
         'count':count,
         'price':price,
-        'images':images
+        'images':images,
+        'isCheck': true
       };
       tempList.add(newGoods);
       cartList.add(CartInfoMode.fromJson(newGoods));
@@ -49,17 +53,33 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-//  getCartList() async{
-//    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-//    String str = sharedPreferences.getString("cartInfo");
-//    if(str == null) {
-//      cartList = [];
-//    }else {
-//      List<Map> tempList = (json.decode(str) as List).cast();
-//      tempList.forEach((item){
-//        cartList.add(CartInfoMode.fromJson(item));
-//      });
-//    }
-//    notifyListeners();
-//  }
+  getCartList() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    this.cartList = [];
+    String str = sharedPreferences.getString("cartInfo");
+    List<Map> tempList = (json.decode(str) as List).cast();
+    allPrice = 0.0;
+    allGoodsCount = 0;
+    tempList.forEach((item){
+      if(item['isCheck']) {
+        allPrice += item['count'] * item['price'];
+        allGoodsCount += item['count'];
+      }
+      cartList.add(CartInfoMode.fromJson(item));
+    });
+    notifyListeners();
+  }
+
+    deleteItem(String goodsId) async {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      cartString = sharedPreferences.getString('cartInfo');
+      List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
+      for(int i = 0; i < tempList.length; i++) {
+        if(tempList[i]['goodsId'] == goodsId) {
+          tempList.removeAt(i);
+        }
+      }
+      sharedPreferences.setString('cartInfo', json.encode(tempList).toString());
+      await getCartList();
+    }
 }

@@ -14,29 +14,41 @@ class CartPage extends StatelessWidget {
         appBar: AppBar(
           title: Text('购物车'),
         ),
-        body: Provide<CartProvider>(
-          builder: (context, child, data) {
+      body: FutureBuilder(
+        future:_getCartInfo(context),
+        builder: (context,snapshot){
+          List cartList=Provide.value<CartProvider>(context).cartList;
+          if(snapshot.hasData && cartList!=null){
             return Stack(
               children: <Widget>[
-                ListView.builder(
-                  itemCount: data.cartList.length,
-                  itemBuilder: (context, index) {
-                    return CartItem(data.cartList[index]);
-                  },
+                Provide<CartProvider>(
+                    builder: (context,child,childCategory){
+                      cartList= Provide.value<CartProvider>(context).cartList;
+                      print(cartList);
+                      return ListView.builder(
+                        itemCount: cartList.length,
+                        itemBuilder: (context,index){
+                          return CartItem(cartList[index]);
+                        },
+                      );
+                    }
                 ),
                 Positioned(
+                  bottom:0,
+                  left:0,
                   child: CartBottom(),
-                  bottom: 0,
-                  left: 0,
                 )
               ],
             );
-          },
-        ));
+          }else{
+            return Text('正在加载');
+          }
+        },
+      ),);
   }
 
-//  Future<String> getCartList(BuildContext context) async{
-//    await Provide.value<CartProvider>(context).getCartList();
-//    return 'end';
-//  }
+  Future<String> _getCartInfo(BuildContext context) async{
+    await Provide.value<CartProvider>(context).getCartList();
+    return 'end';
+  }
 }
