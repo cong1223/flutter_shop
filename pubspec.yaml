@@ -53,6 +53,9 @@ dependencies:
   #持久化存储
   shared_preferences: ^0.5.1
 
+  #极光推送服务
+  jpush_flutter: ^0.0.11
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

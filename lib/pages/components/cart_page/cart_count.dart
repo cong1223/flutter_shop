@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_shop/model/cart_info_model.dart';
+import 'package:flutter_shop/provide/cart.dart';
+import 'package:provide/provide.dart';
 
 class CartCount extends StatelessWidget {
+  CartInfoMode item;
+  CartCount(this.item);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,18 +17,20 @@ class CartCount extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          _reduceBtn(),
-          _countArea(),
-          _addBtn(),
+          _reduceBtn(context,item),
+          _countArea(context),
+          _addBtn(context,item),
         ],
       ),
     );
   }
 
   // 减少按钮
-  Widget _reduceBtn(){
+  Widget _reduceBtn(BuildContext context,CartInfoMode item){
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Provide.value<CartProvider>(context).changeGoodsCount(item, 'reduce');
+      },
       child: Container(
         width: ScreenUtil().setWidth(45),
         height: ScreenUtil().setHeight(45),
@@ -41,9 +48,11 @@ class CartCount extends StatelessWidget {
   }
 
   //添加按钮
-  Widget _addBtn(){
+  Widget _addBtn(BuildContext context,CartInfoMode item){
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Provide.value<CartProvider>(context).changeGoodsCount(item, 'add');
+      },
       child: Container(
         width: ScreenUtil().setWidth(45),
         height: ScreenUtil().setHeight(45),
@@ -61,13 +70,14 @@ class CartCount extends StatelessWidget {
   }
 
   //中间数量显示区域
-  Widget _countArea(){
+  Widget _countArea(BuildContext context){
+    int allGoodsCount = Provide.value<CartProvider>(context).allGoodsCount;
     return Container(
       width: ScreenUtil().setWidth(70),
       height: ScreenUtil().setHeight(45),
       alignment: Alignment.center,
       color: Colors.white,
-      child: Text('1'),
+      child: Text(allGoodsCount.toString()),
     );
   }
 }

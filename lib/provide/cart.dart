@@ -11,6 +11,7 @@ class CartProvider with ChangeNotifier {
   List<CartInfoMode> cartList = [];
   double allPrice = 0.0;
   int allGoodsCount = 0;
+  bool isAllCheck = true;
 
   save(goodsId, goodsName, count, price, images) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -19,11 +20,17 @@ class CartProvider with ChangeNotifier {
     List<Map> tempList = (temp as List).cast();
     bool isHave = false;
     int ival = 0;
+    allPrice=0;
+    allGoodsCount=0;
     tempList.forEach((item) {
       if (item['goodsId'] == goodsId) {
         isHave = true;
         tempList[ival]['count']++;
         cartList[ival].count++;
+      }
+      if(item['isCheck']){
+        allPrice+= (cartList[ival].price* cartList[ival].count);
+        allGoodsCount+= cartList[ival].count;
       }
       ival++;
     });
@@ -38,6 +45,8 @@ class CartProvider with ChangeNotifier {
       };
       tempList.add(newGoods);
       cartList.add(CartInfoMode.fromJson(newGoods));
+      allPrice+= (count * price);
+      allGoodsCount+=count;
     }
 
     cartString = json.encode(tempList).toString();
@@ -60,10 +69,13 @@ class CartProvider with ChangeNotifier {
     List<Map> tempList = (json.decode(str) as List).cast();
     allPrice = 0.0;
     allGoodsCount = 0;
+    isAllCheck = true;
     tempList.forEach((item) {
       if (item['isCheck']) {
         allPrice += item['count'] * item['price'];
         allGoodsCount += item['count'];
+      }else {
+        isAllCheck = false;
       }
       cartList.add(CartInfoMode.fromJson(item));
     });
@@ -96,22 +108,36 @@ class CartProvider with ChangeNotifier {
     sharedPreferences.setString('cartInfo', json.encode(listTemp).toString());
     await getCartList();
   }
-//  changeCheckState(CartInfoMode cartItem) async{
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    cartString=prefs.getString('cartInfo');  //得到持久化的字符串
-//    List<Map> tempList= (json.decode(cartString.toString()) as List).cast(); //声明临时List，用于循环，找到修改项的索引
-//    int tempIndex =0;  //循环使用索引
-//    int changeIndex=0; //需要修改的索引
-//    tempList.forEach((item){
-//      if(item['goodsId']==cartItem.goodsId){
-//        //找到索引进行复制
-//        changeIndex=tempIndex;
-//      }
-//      tempIndex++;
-//    });
-//    tempList[changeIndex]=cartItem.toJson(); //把对象变成Map值
-//    cartString= json.encode(tempList).toString(); //变成字符串
-//    prefs.setString('cartInfo', cartString);//进行持久化
-//    await getCartList();  //重新读取列表
-//  }
+
+//  改变全选按钮状态
+  changeAllCheckBtnState(bool isCheck) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String cartString = sharedPreferences.getString('cartInfo');
+    List<Map> listTemp = (json.decode(cartString) as List).cast();
+    for (int i = 0; i < listTemp.length; i ++) {
+      listTemp[i]['isCheck'] = isCheck;
+    }
+    sharedPreferences.setString('cartInfo', json.encode(listTemp).toString());
+    await getCartList();
+  }
+
+//  改变商品数量
+  changeGoodsCount(CartInfoMode item, String todo) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String cartString = sharedPreferences.getString('cartInfo');
+    List<Map> listTemp = (json.decode(cartString) as List).cast();
+    for(int i=0;i<listTemp.length;i++) {
+      if(item.goodsId == listTemp[i]['goodsId']) {
+        if(todo == 'add') {
+          listTemp[i]['count'] ++;
+        }else {
+          if (listTemp[i]['count'] > 0) {
+            listTemp[i]['count'] --;
+          }
+        }
+      }
+    }
+    sharedPreferences.setString('cartInfo', json.encode(listTemp).toString());
+    await getCartList();
+  }
 }
